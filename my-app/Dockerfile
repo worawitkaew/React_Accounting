@@ -9,6 +9,7 @@ COPY package*.json ./
 # RUN npm install -g npm@9.1.3
 RUN npm install
 
+RUN npm install react-router-dom
 #RUN chmod a+rwx /usr/src/app/my-app/node_modules/
 
 CMD ["npm", "start"]
