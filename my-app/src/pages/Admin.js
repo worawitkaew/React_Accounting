@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Admin() {
 
@@ -9,6 +9,21 @@ function Admin() {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [products, setProducts] = useState([]);
+
+  const loadProducts = () => {
+
+    fetch("http://localhost:8000/products")
+      .then((response) => response.json())
+      .then((data) => {
+        setProducts(data);
+      });
+
+  };
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
   if (role !== "admin") {
     return (
@@ -47,12 +62,72 @@ function Admin() {
         setName("");
         setPrice("");
 
+        loadProducts();
+
         console.log(data);
 
       });
 
   };
+  const handleDeleteProduct = (id) => {
 
+  fetch(`http://localhost:8000/products/${id}`, {
+    method: "DELETE"
+  })
+    .then((response) => response.json())
+    .then((data) => {
+
+      alert("ลบสินค้าสำเร็จ");
+
+      loadProducts();
+
+      console.log(data);
+
+    });
+
+};
+const handleUpdateProduct = (item) => {
+
+  const newName = prompt(
+    "ชื่อสินค้าใหม่",
+    item.name
+  );
+
+  if (!newName) {
+    return;
+  }
+
+  const newPrice = prompt(
+    "ราคาใหม่",
+    item.price
+  );
+
+  if (!newPrice) {
+    return;
+  }
+
+  fetch(`http://localhost:8000/products/${item.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name: newName,
+      price: Number(newPrice)
+    })
+  })
+    .then((response) => response.json())
+    .then((data) => {
+
+      alert("แก้ไขสินค้าสำเร็จ");
+
+      loadProducts();
+
+      console.log(data);
+
+    });
+
+};
   return (
     <div>
 
@@ -67,8 +142,7 @@ function Admin() {
         onChange={(e) => setName(e.target.value)}
       />
 
-      <br />
-      <br />
+      <br /><br />
 
       <input
         type="number"
@@ -77,15 +151,43 @@ function Admin() {
         onChange={(e) => setPrice(e.target.value)}
       />
 
-      <br />
-      <br />
+      <br /><br />
 
       <button onClick={handleAddProduct}>
         เพิ่มสินค้า
       </button>
 
-      <br />
-      <br />
+      <hr />
+
+      <h2>รายการสินค้า</h2>
+
+      {products.map((item) => (
+
+        <div key={item.id}>
+
+          <p>
+            {item.id} | {item.name} | {item.price} บาท
+          </p>
+
+          <button
+            onClick={() => handleUpdateProduct(item)}
+          >
+            แก้ไขสินค้า
+          </button>
+
+          {" "}
+
+          <button
+            onClick={() => handleDeleteProduct(item.id)}
+          >
+            ลบสินค้า
+          </button>
+
+          <hr />
+
+        </div>
+
+      ))}
 
       <button onClick={handleLogout}>
         Logout
