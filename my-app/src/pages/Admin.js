@@ -8,8 +8,12 @@ function Admin() {
   const role = localStorage.getItem("role");
 
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [costPrice, setCostPrice] = useState("");
+  const [sellPrice, setSellPrice] = useState("");
+  const [stock, setStock] = useState("");
+
   const [products, setProducts] = useState([]);
+  
 
   const loadProducts = () => {
 
@@ -51,7 +55,9 @@ function Admin() {
       },
       body: JSON.stringify({
         name: name,
-        price: Number(price)
+        cost_price: Number(costPrice),
+        sell_price: Number(sellPrice),
+        stock: Number(stock)
       })
     })
       .then((response) => response.json())
@@ -60,7 +66,12 @@ function Admin() {
         alert("เพิ่มสินค้าสำเร็จ");
 
         setName("");
-        setPrice("");
+
+        setCostPrice("");
+
+        setSellPrice("");
+
+        setStock("");
 
         loadProducts();
 
@@ -145,11 +156,31 @@ const handleUpdateProduct = (item) => {
       <br /><br />
 
       <input
-        type="number"
-        placeholder="ราคา"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
+  type="number"
+  placeholder="ต้นทุน"
+  value={costPrice}
+  onChange={(e) => setCostPrice(e.target.value)}
+/>
+
+<br />
+<br />
+
+<input
+  type="number"
+  placeholder="ราคาขาย"
+  value={sellPrice}
+  onChange={(e) => setSellPrice(e.target.value)}
+/>
+
+<br />
+<br />
+
+<input
+  type="number"
+  placeholder="สต็อก"
+  value={stock}
+  onChange={(e) => setStock(e.target.value)}
+/>
 
       <br /><br />
 
@@ -166,7 +197,15 @@ const handleUpdateProduct = (item) => {
         <div key={item.id}>
 
           <p>
-            {item.id} | {item.name} | {item.price} บาท
+            {item.id}
+            {" | "}
+            {item.name}
+            {" | ต้นทุน "}
+            {item.cost_price}
+            {" | ขาย "}
+            {item.sell_price}
+            {" | คงเหลือ "}
+            {item.stock}
           </p>
 
           <button

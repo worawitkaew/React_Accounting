@@ -1,39 +1,91 @@
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function Dashboard() {
 
-  const navigate = useNavigate();
+  const [summary, setSummary] = useState(null);
+  const [transactions, setTransactions] = useState([]);
 
-  const role = localStorage.getItem("role");
+  useEffect(() => {
 
-  if (!role) {
-    return (
-      <div>
-        <h1>กรุณา Login ก่อน</h1>
+    fetch("http://localhost:8000/dashboard")
+      .then((response) => response.json())
+      .then((data) => {
 
-        <button onClick={() => navigate("/login")}>
-          ไปหน้า Login
-        </button>
-      </div>
-    );
+        setSummary(data);
+
+      });
+
+    fetch("http://localhost:8000/transactions")
+      .then((response) => response.json())
+      .then((data) => {
+
+        setTransactions(data);
+
+      });
+
+  }, []);
+
+  if (!summary) {
+
+    return <h1>Loading...</h1>;
+
   }
-
-  const handleLogout = () => {
-
-    localStorage.removeItem("role");
-
-    navigate("/");
-  };
 
   return (
     <div>
-      <h1>User Dashboard</h1>
 
-      <p>Role : {role}</p>
+      <h1>Dashboard ร้านดาวตก</h1>
 
-      <button onClick={handleLogout}>
-        Logout
-      </button>
+      <hr />
+
+      <h2>
+        จำนวนบิล : {summary.total_transactions}
+      </h2>
+
+      <h2>
+        ยอดขายรวม : {summary.total_sell} บาท
+      </h2>
+
+      <h2>
+        ต้นทุนรวม : {summary.total_cost} บาท
+      </h2>
+
+      <h2>
+        กำไรรวม : {summary.total_profit} บาท
+      </h2>
+
+      <hr />
+
+      <h2>ประวัติบิล</h2>
+
+      {transactions.map((item) => (
+
+        <div key={item.id}>
+
+          <p>
+
+            บิล #{item.id}
+
+            {" | "}
+
+            {item.created_at}
+
+            {" | ขาย "}
+
+            {item.total_sell}
+
+            {" บาท | กำไร "}
+
+            {item.profit}
+
+            {" บาท"}
+
+          </p>
+
+        </div>
+
+      ))}
+
     </div>
   );
 }

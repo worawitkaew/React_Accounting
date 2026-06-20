@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
 import Product from "./pages/Product";
+import Expense from "./pages/Expense";
+import Cashier from "./pages/Cashier";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/expense" element={<Expense />} />
+        <Route path="/cashier" element={<Cashier />} />
       </Routes>
     </BrowserRouter>
   );

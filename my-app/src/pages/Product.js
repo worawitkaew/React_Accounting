@@ -25,7 +25,7 @@ function Product() {
 
           <h3>{item.name}</h3>
 
-          <p>ราคา {item.price} บาท</p>
+          <p>ราคา {item.sell_price} บาท</p>
 
           <hr />
 

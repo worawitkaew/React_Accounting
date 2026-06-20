@@ -10,27 +10,43 @@ function Login() {
 
   const handleLogin = () => {
 
-    if (username === "admin" && password === "admin") {
+    fetch("http://localhost:8000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
+    })
+      .then((response) => response.json())
+      .then((data) => {
 
-        localStorage.setItem("role", "admin");
+        if (data.success) {
 
-        navigate("/admin");
-        return;
-    }
+          localStorage.setItem("role", data.role);
+          localStorage.setItem("username", data.username);
 
-    if (username === "user" && password === "user") {
+          if (data.role === "admin") {
+            navigate("/admin");
+          } else {
+            navigate("/dashboard");
+          }
 
-        localStorage.setItem("role", "user");
+        } else {
 
-        navigate("/dashboard");
-        return;
-    }
+          alert(data.message);
 
-    alert("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+        }
+
+      });
+
   };
 
   return (
     <div>
+
       <h1>Login</h1>
 
       <input
@@ -56,6 +72,7 @@ function Login() {
       <button onClick={handleLogin}>
         Login
       </button>
+
     </div>
   );
 }
