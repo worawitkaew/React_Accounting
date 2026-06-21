@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import "./Cashier.css";
 function Cashier() {
 
   const [products, setProducts] = useState([]);
@@ -121,77 +121,111 @@ function Cashier() {
   };
 
   return (
-    <div>
 
-      <h1>เครื่องคิดเงินร้านดาวตก</h1>
+  <div className="cashier-page">
 
-      <h2>รายการสินค้า</h2>
+    <h1 className="cashier-title">
+      ⭐ เครื่องคิดเงินร้านดาวตก
+    </h1>
 
-      {products.map((item) => (
+    <div className="cashier-layout">
 
-        <div key={item.id}>
+      <div className="product-section">
 
-          <p>
-            {item.name}
-            {" | ขาย "}
-            {item.sell_price}
-            {" บาท | คงเหลือ "}
-            {item.stock}
-          </p>
+        <h2>สินค้า</h2>
 
-          <button
-            onClick={() => addToCart(item)}
+        {products.map((item) => (
+
+          <div
+            key={item.id}
+            className="product-card"
           >
-            เพิ่มเข้าตะกร้า
-          </button>
 
-          <hr />
+            <h3>
+              {item.name}
+            </h3>
 
-        </div>
+            <p>
+              ราคา {item.sell_price} บาท
+            </p>
 
-      ))}
+            <p>
+              คงเหลือ {item.stock} ชิ้น
+            </p>
 
-      <h2>ตะกร้าสินค้า</h2>
+            <button
+              className="add-button"
+              onClick={() => addToCart(item)}
+            >
+              เพิ่มเข้าตะกร้า
+            </button>
 
-      {cart.map((item) => (
+          </div>
 
-        <div key={item.id}>
+        ))}
+
+      </div>
+
+      <div className="cart-section">
+
+        <h2>ตะกร้าสินค้า</h2>
+
+        {cart.length === 0 && (
 
           <p>
-
-            {item.name}
-
-            {" | ขาย "}
-            {item.sell_price}
-
-            {" | จำนวน "}
-            {item.quantity}
-
-            {" | รวม "}
-            {item.sell_price * item.quantity}
-
-            {" บาท"}
-
+            ยังไม่มีสินค้า
           </p>
+
+        )}
+
+        {cart.map((item) => (
+
+          <div
+            key={item.id}
+            className="cart-card"
+          >
+
+            <h3>
+              {item.name}
+            </h3>
+
+            <p>
+              จำนวน {item.quantity}
+            </p>
+
+            <p>
+              รวม {item.quantity * item.sell_price} บาท
+            </p>
+
+          </div>
+
+        ))}
+
+        <div className="total-box">
+
+          <h2>
+            ยอดรวม
+          </h2>
+
+          <h1>
+            {totalAmount} บาท
+          </h1>
 
         </div>
 
-      ))}
+        <button
+          className="checkout-button"
+          onClick={handleCheckout}
+        >
+          ยืนยันการขาย
+        </button>
 
-      <hr />
-
-      <h3>
-        ยอดสุทธิ : {totalAmount} บาท
-      </h3>
-
-      <button
-        onClick={handleCheckout}
-      >
-        ยืนยันการขาย
-      </button>
+      </div>
 
     </div>
+
+  </div>
+
   );
 }
-
 export default Cashier;

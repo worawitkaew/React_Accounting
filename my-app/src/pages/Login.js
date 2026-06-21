@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 function Login() {
 
@@ -45,33 +46,37 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="login-page">
 
-      <h1>Login</h1>
+      <div className="login-card">
 
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+        <h1>
+          ⭐ ร้านดาวตก
+        </h1>
 
-      <br />
-      <br />
+        <h2>
+          เข้าสู่ระบบ
+        </h2>
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
 
-      <br />
-      <br />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <button onClick={handleLogin}>
-        Login
-      </button>
+        <button onClick={handleLogin}>
+          Login
+        </button>
+
+      </div>
 
     </div>
   );

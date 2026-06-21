@@ -1,0 +1,132 @@
+.cashier-page {
+
+  min-height: 100vh;
+
+  background: #000000;
+
+  color: white;
+
+  padding: 20px;
+
+}
+
+.cashier-title {
+
+  text-align: center;
+
+  color: gold;
+
+  text-shadow:
+    0 0 10px gold,
+    0 0 20px gold;
+
+  margin-bottom: 30px;
+
+}
+
+.cashier-layout {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+
+}
+
+.product-section,
+.cart-section {
+
+  background: #111111;
+
+  border: 2px solid gold;
+
+  border-radius: 15px;
+
+  padding: 20px;
+
+}
+
+.product-card {
+
+  background: #1a1a1a;
+
+  border-left: 4px solid gold;
+
+  padding: 15px;
+
+  margin-bottom: 10px;
+
+  border-radius: 10px;
+
+}
+
+.cart-card {
+
+  background: #1a1a1a;
+
+  border-left: 4px solid #22c55e;
+
+  padding: 15px;
+
+  margin-bottom: 10px;
+
+  border-radius: 10px;
+
+}
+
+.add-button {
+
+  background: gold;
+
+  color: black;
+
+  border: none;
+
+  padding: 10px;
+
+  border-radius: 8px;
+
+  font-weight: bold;
+
+}
+
+.checkout-button {
+
+  width: 100%;
+
+  height: 60px;
+
+  background: #22c55e;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 10px;
+
+  font-size: 18px;
+
+  font-weight: bold;
+
+}
+
+.total-box {
+
+  text-align: center;
+
+  margin-top: 20px;
+
+  margin-bottom: 20px;
+
+  border-top: 1px solid #444;
+
+  padding-top: 20px;
+
+}
+
+.total-box h1 {
+
+  color: gold;
+
+}

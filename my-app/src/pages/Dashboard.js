@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./Dashboard.css";
 
 function Dashboard() {
 
@@ -27,40 +28,76 @@ function Dashboard() {
 
   if (!summary) {
 
-    return <h1>Loading...</h1>;
+    return (
+      <div className="dashboard-page">
+        <h1>Loading...</h1>
+      </div>
+    );
 
   }
 
   return (
-    <div>
 
-      <h1>Dashboard ร้านดาวตก</h1>
+    <div className="dashboard-page">
 
-      <hr />
+      <h1 className="dashboard-title">
+        ⭐ Dashboard ร้านดาวตก
+      </h1>
 
-      <h2>
-        จำนวนบิล : {summary.total_transactions}
+      <div className="summary-grid">
+
+        <div className="summary-card">
+
+          <h3>จำนวนบิล</h3>
+
+          <p>
+            {summary.total_transactions}
+          </p>
+
+        </div>
+
+        <div className="summary-card">
+
+          <h3>ยอดขายรวม</h3>
+
+          <p>
+            {summary.total_sell} บาท
+          </p>
+
+        </div>
+
+        <div className="summary-card">
+
+          <h3>ต้นทุนรวม</h3>
+
+          <p>
+            {summary.total_cost} บาท
+          </p>
+
+        </div>
+
+        <div className="summary-card">
+
+          <h3>กำไรรวม</h3>
+
+          <p>
+            {summary.total_profit} บาท
+          </p>
+
+        </div>
+
+      </div>
+
+      <h2 className="history-title">
+        ประวัติบิล
       </h2>
-
-      <h2>
-        ยอดขายรวม : {summary.total_sell} บาท
-      </h2>
-
-      <h2>
-        ต้นทุนรวม : {summary.total_cost} บาท
-      </h2>
-
-      <h2>
-        กำไรรวม : {summary.total_profit} บาท
-      </h2>
-
-      <hr />
-
-      <h2>ประวัติบิล</h2>
 
       {transactions.map((item) => (
 
-        <div key={item.id}>
+        <div
+          key={item.id}
+          className="transaction-card"
+        >
 
           <p>
 
@@ -87,6 +124,7 @@ function Dashboard() {
       ))}
 
     </div>
+
   );
 }
 
