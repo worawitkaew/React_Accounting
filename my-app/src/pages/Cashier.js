@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Cashier.css";
+import API_URL from "../api";
 function Cashier() {
 
   const [products, setProducts] = useState([]);
@@ -7,7 +8,7 @@ function Cashier() {
 
   const loadProducts = () => {
 
-    fetch("http://localhost:8000/products")
+    fetch(`${API_URL}/products`)
       .then((response) => response.json())
       .then((data) => {
 
@@ -82,7 +83,7 @@ function Cashier() {
       quantity: item.quantity
     }));
 
-    fetch("http://localhost:8000/checkout", {
+    fetch(`${API_URL}/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

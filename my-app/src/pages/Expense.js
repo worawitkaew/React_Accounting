@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import API_URL from "../api";
 function Expense() {
 
   const [description, setDescription] = useState("");
@@ -8,7 +8,7 @@ function Expense() {
 
   const loadExpenses = () => {
 
-    fetch("http://localhost:8000/expenses")
+    fetch(`${API_URL}/expenses`)
       .then((response) => response.json())
       .then((data) => {
         setExpenses(data);
@@ -24,7 +24,7 @@ function Expense() {
 
     const today = new Date().toISOString().split("T")[0];
 
-    fetch("http://localhost:8000/expenses", {
+    fetch(`${API_URL}/expenses`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -52,7 +52,7 @@ function Expense() {
   };
 const handleDeleteExpense = (id) => {
 
-  fetch(`http://localhost:8000/expenses/${id}`, {
+  fetch(`${API_URL}/expenses/${id}`, {
     method: "DELETE"
   })
     .then((response) => response.json())
@@ -86,7 +86,7 @@ const handleDeleteExpense = (id) => {
     return;
   }
 
-  fetch(`http://localhost:8000/expenses/${item.id}`, {
+  fetch(`${API_URL}/expenses/${item.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"

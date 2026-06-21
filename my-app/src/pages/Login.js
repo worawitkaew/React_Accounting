@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-
+import API_URL from "../api";
 function Login() {
 
   const [username, setUsername] = useState("");
@@ -11,7 +11,7 @@ function Login() {
 
   const handleLogin = () => {
 
-    fetch("http://localhost:8000/login", {
+    fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

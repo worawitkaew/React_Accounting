@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import "./Product.css";
-
+import API_URL from "../api";
 function Product() {
 
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
 
-    fetch("http://localhost:8000/products")
+    fetch(`${API_URL}/products`)
       .then((response) => response.json())
       .then((data) => {
         
@@ -38,7 +38,7 @@ function Product() {
 
   <img
     src={
-      "http://localhost:8000/uploads/" +
+      `${API_URL}/uploads/` +
       item.image
     }
     alt={item.name}

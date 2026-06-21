@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Dashboard.css";
-
+import API_URL from "../api";
 function Dashboard() {
 
   const [summary, setSummary] = useState(null);
@@ -8,7 +8,7 @@ function Dashboard() {
 
   useEffect(() => {
 
-    fetch("http://localhost:8000/dashboard")
+    fetch(`${API_URL}/dashboard`)
       .then((response) => response.json())
       .then((data) => {
 
@@ -16,7 +16,7 @@ function Dashboard() {
 
       });
 
-    fetch("http://localhost:8000/transactions")
+    fetch(`${API_URL}/transactions`)
       .then((response) => response.json())
       .then((data) => {
 

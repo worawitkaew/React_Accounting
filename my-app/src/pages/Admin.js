@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./Admin.css";
-
+import API_URL from "../api";
 function Admin() {
 
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ function Admin() {
 
       const response =
         await fetch(
-          `http://localhost:8000/products/${id}/image`,
+          `${API_URL}/products/${id}/image`,
           {
             method: "PUT",
             body: formData
@@ -75,7 +75,7 @@ function Admin() {
 };
   const loadProducts = () => {
 
-    fetch("http://localhost:8000/products")
+    fetch(`http://localhost:8000/products`)
       .then((response) => response.json())
       .then((data) => {
 
@@ -137,7 +137,7 @@ function Admin() {
 
       const uploadResponse =
         await fetch(
-          "http://localhost:8000/upload",
+          `${API_URL}/upload`,
           {
             method: "POST",
             body: formData
@@ -154,7 +154,7 @@ function Admin() {
 
     const response =
       await fetch(
-        "http://localhost:8000/products",
+        `${API_URL}/products`,
         {
           method: "POST",
           headers: {
@@ -205,7 +205,7 @@ function Admin() {
 
   const handleDeleteProduct = (id) => {
 
-    fetch(`http://localhost:8000/products/${id}`, {
+    fetch(`${API_URL}/products/${id}`, {
       method: "DELETE"
     })
       .then((response) => response.json())
@@ -254,7 +254,7 @@ function Admin() {
   if (!newStock) return;
 
   fetch(
-    `http://localhost:8000/products/${item.id}`,
+    `${API_URL}/products/${item.id}`,
     {
       method: "PUT",
 
@@ -373,7 +373,7 @@ function Admin() {
         >
           <img
             src={
-              "http://localhost:8000/uploads/" +
+              `${API_URL}/uploads/` +
               item.image
             }
             alt={item.name}
