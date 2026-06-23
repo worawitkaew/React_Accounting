@@ -1,306 +1,454 @@
 .home-page {
-  min-height: 100vh;
-
-  background: #000000;
-
-  color: white;
-
-  font-family: Arial, sans-serif;
+min-height: 100vh;
+background: #000;
+color: white;
+font-family: Arial, sans-serif;
 }
 
 .header {
-
-  height: 80px;
-
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: center;
-
-  padding-left: 30px;
-
-  padding-right: 30px;
-
-  background: #111111;
-
-  border-bottom: 2px solid gold;
+height: 80px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0 30px;
+background: #111;
+border-bottom: 2px solid gold;
 }
 
 .logo {
-  margin: 0;
+margin: 0;
+color: gold;
+text-shadow:
+0 0 10px gold,
+0 0 20px gold,
+0 0 30px gold;
 }
 
 .login-btn {
-  height: 40px;
-
-  padding-left: 15px;
-
-  padding-right: 15px;
-
-  cursor: pointer;
+height: 40px;
+padding: 0 15px;
+cursor: pointer;
+border-radius: 8px;
+border: none;
 }
 
 .main-layout {
-  display: flex;
-
-  min-height: calc(100vh - 80px);
+display: flex;
+min-height: calc(100vh - 80px);
 }
 
 .sidebar {
-
-  width: 240px;
-
-  background: #0a0a0a;
-
-  border-right: 2px solid gold;
-
-  padding: 20px;
-}
-
-.menu-title {
-  font-weight: bold;
-
-  margin-bottom: 20px;
+width: 240px;
+background: #0a0a0a;
+border-right: 2px solid gold;
+padding: 20px;
 }
 
 .menu-btn {
-
-  width: 100%;
-
-  height: 50px;
-
-  margin-bottom: 12px;
-
-  border: 1px solid gold;
-
-  background: #111111;
-
-  color: white;
-
-  border-radius: 8px;
-
-  cursor: pointer;
-
-  transition: 0.3s;
+width: 100%;
+height: 50px;
+margin-bottom: 12px;
+border: 1px solid gold;
+background: #111;
+color: white;
+border-radius: 8px;
+cursor: pointer;
+transition: 0.3s;
 }
 
 .menu-btn:hover {
-
-  background: gold;
-
-  color: black;
-
+background: gold;
+color: black;
 }
 
 .content {
+flex: 1;
+position: relative;
+overflow-y: auto;
+padding: 40px;
+min-height: calc(100vh - 80px);
+}
 
-  flex: 1;
+/* ---------- HOME ---------- */
 
-  position: relative;
+.video-background {
+position: absolute;
+inset: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+z-index: 1;
+}
 
-  overflow: hidden;
+.video-overlay {
+position: absolute;
+inset: 0;
+background: rgba(0,0,0,0.5);
+z-index: 2;
+}
 
-  display: flex;
+.home-content {
+position: relative;
+z-index: 3;
 
-  justify-content: center;
+display: flex;
+flex-direction: column;
 
-  align-items: center;
+justify-content: center;
+align-items: center;
+
+text-align: center;
+
+min-height: 80vh;
+}
+
+.home-content h1 {
+color: gold;
+
+text-shadow:
+0 0 15px gold,
+0 0 30px gold;
+}
+
+/* ---------- ดาว ---------- */
+
+.star {
+position: absolute;
+color: gold;
+animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+
+0% {
+opacity: 0.2;
+}
+
+50% {
+opacity: 1;
+}
+
+100% {
+opacity: 0.2;
+}
 
 }
 
-.hero-btn {
-  margin-top: 20px;
+/* ---------- ดาวตก ---------- */
 
-  width: 180px;
+.shooting-star {
 
-  height: 50px;
+position: absolute;
 
-  border: none;
+top: 100px;
+left: -150px;
 
-  border-radius: 10px;
+width: 150px;
+height: 2px;
 
-  cursor: pointer;
+background:
+linear-gradient(
+90deg,
+#ffd700,
+transparent
+);
 
-  font-size: 16px;
+transform: rotate(-25deg);
+
+animation:
+shootingStar 8s linear infinite;
+
+z-index: 1;
+
 }
 
-.meteor {
-  font-size: 90px;
+.shooting-star::before {
 
-  animation: floating 3s ease-in-out infinite;
+content: "⭐";
+
+position: absolute;
+
+right: -10px;
+top: -10px;
+
+font-size: 20px;
+
+color: #ffd700;
+
 }
 
-@keyframes floating {
+@keyframes shootingStar {
 
   0% {
-    transform: translateY(0px);
+
+    transform:
+      translateX(0)
+      translateY(0)
+      rotate(-25deg);
+
+    opacity: 0;
+
   }
 
-  50% {
-    transform: translateY(-15px);
+  10% {
+    opacity: 1;
+  }
+
+  40% {
+    opacity: 1;
   }
 
   100% {
-    transform: translateY(0px);
+
+    transform:
+      translateX(1400px)
+      translateY(500px)
+      rotate(-25deg);
+
+    opacity: 0;
+
   }
 
 }
+
+
+/* ---------- สินค้าแนะนำ ---------- */
+
+.product-section {
+  padding-top: 20px;
+  width: 100%;
+}
+
+.product-section h1 {
+  color: gold;
+  margin-bottom: 25px;
+  text-align: center;
+}
+.featured-products {
+  display: grid;
+
+  grid-template-columns:
+  repeat(
+    auto-fill,
+    minmax(240px, 240px)
+  );
+
+  justify-content: center;
+
+  gap: 30px;
+
+  max-width: 1300px;
+
+  margin: 0 auto;
+}
+
+.featured-card {
+
+  width: 240px;
+  
+  background: #111;
+
+  border: 1px solid #ffd700;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  transition: 0.3s;
+
+  box-shadow:
+  0 0 15px rgba(
+  255,
+  215,
+  0,
+  0.2
+  );
+
+  height: 100%;
+}
+
+.featured-card:hover {
+
+transform:
+translateY(-8px);
+
+box-shadow:
+0 0 25px rgba(
+255,
+215,
+0,
+0.5
+);
+
+}
+
+.featured-image {
+
+width: 100%;
+height: 220px;
+
+object-fit: cover;
+
+}
+
+.featured-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.featured-info h3 {
+
+color: white;
+
+margin-bottom: 12px;
+
+min-height: 60px;
+
+font-size: 18px;
+
+line-height: 1.4;
+
+}
+
+.price {
+
+color: gold;
+
+font-size: 22px;
+
+font-weight: bold;
+
+margin-bottom: 10px;
+
+}
+
+.stock {
+
+color: #ccc;
+
+margin-bottom: 15px;
+
+}
+
+.detail-btn {
+
+width: 100%;
+
+padding: 10px;
+
+border: none;
+
+border-radius: 10px;
+
+background: gold;
+
+color: black;
+
+font-size: 16px;
+
+font-weight: bold;
+
+cursor: pointer;
+
+transition: 0.3s;
+
+margin-top: auto;
+}
+
+.detail-btn:hover {
+background: #fff099;
+}
+
+/* ---------- ตาราง ---------- */
+
 table {
 
-  border-collapse: collapse;
+width: 100%;
 
-  width: 80%;
+border-collapse: collapse;
 
 }
 
 th,
 td {
 
-  border: 1px solid #334155;
+border: 1px solid #334155;
 
-  padding: 12px;
+padding: 12px;
 
 }
 
 th {
 
-  background: #1e293b;
+background: #1e293b;
 
 }
-.hero-video {
 
-  width: 400px;
+/* ---------- Footer ---------- */
 
-  max-width: 90%;
+.footer {
 
-  border-radius: 20px;
+text-align: center;
 
-  margin-bottom: 20px;
+padding: 20px;
 
-  box-shadow: 0px 0px 20px rgba(
-    255,
-    255,
-    255,
-    0.2
-  );
+margin-top: 30px;
 
-}
-.video-background {
+color: gold;
 
-  position: absolute;
+border-top: 1px solid gold;
 
-  top: 0;
-
-  left: 0;
-
-  width: 100%;
-
-  height: 100%;
-
-  object-fit: cover;
+background:
+rgba(0,0,0,0.4);
 
 }
-.video-overlay {
-
-  position: absolute;
-
-  top: 0;
-
-  left: 0;
-
-  width: 100%;
-
-  height: 100%;
-
-  background: rgba(
-    0,
-    0,
-    0,
-    0.55
-  );
-
-}
-.home-content {
-
-  position: relative;
-
-  z-index: 2;
+.product-subtitle {
 
   text-align: center;
 
-}
-/* ⭐ ร้านดาวตก จะมีแสงทองออกมา */
-.logo {
+  color: #ccc;
 
-  color: gold;
+  margin-bottom: 30px;
 
-  text-shadow:
-    0 0 10px gold,
-    0 0 20px gold,
-    0 0 30px gold;
+  font-size: 16px;
 
 }
-/* ⭐ ร้านดาวตก ตรงกลางจอจะเรืองแสงเหมือนป้ายร้าน */
-.home-content h1 {
 
-  color: gold;
+.view-all-container {
 
-  text-shadow:
-    0 0 15px gold,
-    0 0 30px gold;
+  text-align: center;
+
+  margin-top: 40px;
 
 }
-/* เพิ่มดาวกระพริบ */
-.star {
 
-  position: absolute;
+.view-all-btn {
 
-  color: gold;
+  background: gold;
 
-  animation: twinkle 2s infinite;
+  color: black;
 
-}
-@keyframes twinkle {
+  border: none;
 
-  0% {
-    opacity: 0.2;
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0.2;
-  }
-
-}
-.featured-image {
-
-  width: 120px;
-
-  height: 120px;
-
-  object-fit: cover;
-
-  border-radius: 10px;
-
-  border: 2px solid gold;
-
-}
-.featured-card {
-
-  width: 180px;
-
-  padding: 15px;
-
-  background: rgba(0,0,0,0.7);
-
-  border: 1px solid gold;
+  padding: 14px 30px;
 
   border-radius: 12px;
 
-  text-align: center;
+  font-size: 18px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+}
+
+.view-all-btn:hover {
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 0 15px rgba(255,215,0,0.6);
 
 }

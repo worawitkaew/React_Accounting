@@ -1,17 +1,16 @@
 import { Link } from "react-router-dom";
-import {
-  useState,
-  useEffect
-} from "react";
+import { useState, useEffect } from "react";
 import "./Home.css";
 import API_URL from "../api";
+
 import meteorVideo from "../assets/videos/meteor.mp4";
 
 function Home() {
+
   const [page, setPage] = useState("home");
-  const [time, setTime] = useState(
-    new Date()
-  );
+  const [time, setTime] = useState(new Date());
+  const [products, setProducts] = useState([]);
+
   useEffect(() => {
 
     const timer = setInterval(() => {
@@ -23,8 +22,6 @@ function Home() {
     return () => clearInterval(timer);
 
   }, []);
-
-  const [products, setProducts] = useState([]);
 
   useEffect(() => {
 
@@ -39,6 +36,7 @@ function Home() {
   }, []);
 
   return (
+
     <div className="home-page">
 
       {/* Header */}
@@ -91,103 +89,75 @@ function Home() {
         {/* Content */}
 
         <div className="content">
-        <div
-  className="star"
-  style={{
-    top: "10%",
-    left: "20%"
-  }}
->
-  ✦
-</div>
 
-<div
-  className="star"
-  style={{
-    top: "25%",
-    left: "75%"
-  }}
->
-  ✦
-</div>
+          <div className="shooting-star"></div>
 
-<div
-  className="star"
-  style={{
-    top: "70%",
-    left: "30%"
-  }}
->
-  ✦
-</div>
+          <div className="star">✦</div>
 
-<div
-  className="star"
-  style={{
-    top: "80%",
-    left: "80%"
-  }}
->
-  ✦
-</div>
+          <div className="star">✦</div>
+
+          <div className="star">✦</div>
+
+          <div className="star">✦</div>
+
+          {/* HOME */}
+
           {page === "home" && (
 
-  <>
+            <>
+              <video
+                className="video-background"
+                autoPlay
+                muted
+                loop
+                playsInline
+              >
+                <source
+                  src={meteorVideo}
+                  type="video/mp4"
+                />
+              </video>
 
-    <video
-      className="video-background"
-      autoPlay
-      muted
-      loop
-      playsInline
-    >
-      <source
-        src={meteorVideo}
-        type="video/mp4"
-      />
-    </video>
+              <div className="video-overlay"></div>
 
-    <div className="video-overlay"></div>
+              <div className="home-content">
 
-    <div className="home-content">
+                <h1>
+                  ⭐ ร้านดาวตก
+                </h1>
 
-      <h1>
-        ⭐ ร้านดาวตก
-      </h1>
+                <h2>
+                  ยินดีต้อนรับ
+                </h2>
 
-      <h2>
-        ยินดีต้อนรับ
-      </h2>
+                <p>
+                  ร้านเล็ก ๆ ที่กำลังเติบโตด้วยเทคโนโลยี
+                </p>
 
-      <p>
-        ร้านเล็ก ๆ ที่กำลังเติบโตด้วยเทคโนโลยี
-      </p>
-      <p>
+                <p>
+                  เวลา : {time.toLocaleTimeString()}
+                </p>
 
-        เวลา :
+              </div>
 
-        {" "}
+            </>
 
-        {time.toLocaleTimeString()}
+          )}
 
-      </p>
-    </div>
-
-  </>
-
-)}
+          {/* PRODUCT */}
 
           {page === "product" && (
+  <div className="product-section">
 
-  <>
+    <h1>🌟 สินค้าแนะนำ</h1>
 
-    <h1>
-      🌟 สินค้าแนะนำ
-    </h1>
+    <p className="product-subtitle">
+      สินค้าคัดสรรจากร้านดาวตก
+    </p>
 
     <div className="featured-products">
 
-      {products.slice(0, 6).map((item) => (
+      {products.slice(0, 8).map((item) => (
 
         <div
           key={item.id}
@@ -195,29 +165,30 @@ function Home() {
         >
 
           {item.image && (
-
             <img
-              src={
-                `${API_URL}/uploads/` +
-                item.image
-              }
+              src={`${API_URL}/uploads/${item.image}`}
               alt={item.name}
               className="featured-image"
             />
-
           )}
 
-          <h3>
-            {item.name}
-          </h3>
+          <div className="featured-info">
 
-          <p>
-            ราคา {item.sell_price} บาท
-          </p>
+            <h3>{item.name}</h3>
 
-          <p>
-            คงเหลือ {item.stock} ชิ้น
-          </p>
+            <div className="price">
+              ⭐ {item.sell_price.toLocaleString()} บาท
+            </div>
+
+            <div className="stock">
+              📦 คงเหลือ {item.stock} ชิ้น
+            </div>
+
+            <button className="detail-btn">
+              ดูสินค้า
+            </button>
+
+          </div>
 
         </div>
 
@@ -225,23 +196,43 @@ function Home() {
 
     </div>
 
-  </>
+    <div className="view-all-container">
 
+      <button
+        className="view-all-btn"
+        onClick={() => window.location.href = "/products"}
+      >
+        🛒 ดูสินค้าทั้งหมด
+      </button>
+
+    </div>
+
+  </div>
 )}
+
+          {/* CONTACT */}
 
           {page === "contact" && (
 
-            <>
+            <div className="contact-section">
 
-              <h1>ติดต่อร้านดาวตก</h1>
+              <h1>
+                ติดต่อร้านดาวตก
+              </h1>
 
-              <p>โทร : 096-6833535</p>
+              <p>
+                📞 096-6833535
+              </p>
 
-              <p>Facebook : ร้านดาวตก</p>
+              <p>
+                Facebook : ร้านดาวตก
+              </p>
 
-              <p>Gmail : mon23503516@gmail.com</p>
+              <p>
+                Gmail : mon23503516@gmail.com
+              </p>
 
-            </>
+            </div>
 
           )}
 
@@ -249,8 +240,24 @@ function Home() {
 
       </div>
 
+      {/* Footer */}
+
+      <div className="footer">
+
+        <p>
+          ☄️ ร้านดาวตก
+        </p>
+
+        <p>
+          Powered by React + FastAPI
+        </p>
+
+      </div>
+
     </div>
+
   );
+
 }
 
 export default Home;

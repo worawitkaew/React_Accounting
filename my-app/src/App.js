@@ -6,9 +6,11 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
-import Product from "./pages/Product";
+import Products from "./pages/Products";
 import Expense from "./pages/Expense";
 import Cashier from "./pages/Cashier";
+
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   return (
@@ -18,9 +20,13 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/product" element={<Product />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/expense" element={<Expense />} />
         <Route path="/cashier" element={<Cashier />} />
+        <Route
+          path="/products/:id"
+          element={<ProductDetail />}
+        />
       </Routes>
     </BrowserRouter>
   );
