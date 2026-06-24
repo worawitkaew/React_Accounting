@@ -9,7 +9,5 @@ services:
     container_name: react-ui
     stdin_open: true
     volumes:
-       - ./my-app:/usr/src/app/my-app
-       - /usr/src/app/my-app/node_modules
-
-    # command: npm start
+      - ./my-app:/usr/src/app/my-app
+      - /usr/src/app/my-app/node_modules

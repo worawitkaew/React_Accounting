@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import API_URL from "../api";
 import "./ProductForm.css";
 
-function ProductForm({ onSuccess }) {
+function ProductForm({ onSuccess ,onClose}) {
 
 const [name, setName] = useState("");
 const [costPrice, setCostPrice] = useState("");
@@ -161,117 +161,126 @@ try {
 
 return (
 
+// {/* <div className="admin-card">  */}
+<div className="modal-overlay">
 
-<div className="admin-card">
+  <div className="modal-box">
+    <h2>
+      เพิ่มสินค้า
+    </h2>
 
-  <h2>
-    เพิ่มสินค้า
-  </h2>
+    <input
+      type="text"
+      placeholder="ชื่อสินค้า"
+      value={name}
+      onChange={(e) =>
+        setName(e.target.value)
+      }
+    />
 
-  <input
-    type="text"
-    placeholder="ชื่อสินค้า"
-    value={name}
-    onChange={(e) =>
-      setName(e.target.value)
-    }
-  />
+    <input
+      type="number"
+      placeholder="ต้นทุน"
+      value={costPrice}
+      onChange={(e) =>
+        setCostPrice(e.target.value)
+      }
+    />
 
-  <input
-    type="number"
-    placeholder="ต้นทุน"
-    value={costPrice}
-    onChange={(e) =>
-      setCostPrice(e.target.value)
-    }
-  />
+    <input
+      type="number"
+      placeholder="ราคาขาย"
+      value={sellPrice}
+      onChange={(e) =>
+        setSellPrice(e.target.value)
+      }
+    />
 
-  <input
-    type="number"
-    placeholder="ราคาขาย"
-    value={sellPrice}
-    onChange={(e) =>
-      setSellPrice(e.target.value)
-    }
-  />
+    <input
+      type="number"
+      placeholder="สต๊อก"
+      value={stock}
+      onChange={(e) =>
+        setStock(e.target.value)
+      }
+    />
 
-  <input
-    type="number"
-    placeholder="สต๊อก"
-    value={stock}
-    onChange={(e) =>
-      setStock(e.target.value)
-    }
-  />
+    <input
+      type="file"
+      onChange={(e) =>
+        setImage(
+          e.target.files[0]
+        )
+      }
+    />
 
-  <input
-    type="file"
-    onChange={(e) =>
-      setImage(
-        e.target.files[0]
-      )
-    }
-  />
+    <select
+      value={owner}
+      onChange={(e) =>
+        setOwner(e.target.value)
+      }
+    >
 
-  <select
-    value={owner}
-    onChange={(e) =>
-      setOwner(e.target.value)
-    }
-  >
+      {owners.map((item) => (
 
-    {owners.map((item) => (
+        <option
+          key={item.id}
+          value={item.name}
+        >
+          {item.name}
+        </option>
 
-      <option
-        key={item.id}
-        value={item.name}
-      >
-        {item.name}
-      </option>
+      ))}
 
-    ))}
+    </select>
 
-  </select>
+    <select
+      value={category}
+      onChange={(e) =>
+        setCategory(e.target.value)
+      }
+    >
 
-  <select
-    value={category}
-    onChange={(e) =>
-      setCategory(e.target.value)
-    }
-  >
+      {categories.map((item) => (
 
-    {categories.map((item) => (
+        <option
+          key={item.id}
+          value={item.name}
+        >
+          {item.name}
+        </option>
 
-      <option
-        key={item.id}
-        value={item.name}
-      >
-        {item.name}
-      </option>
+      ))}
 
-    ))}
+    </select>
 
-  </select>
+    <textarea
+      rows="4"
+      placeholder="รายละเอียดสินค้า"
+      value={description}
+      onChange={(e) =>
+        setDescription(
+          e.target.value
+        )
+      }
+    />
 
-  <textarea
-    rows="4"
-    placeholder="รายละเอียดสินค้า"
-    value={description}
-    onChange={(e) =>
-      setDescription(
-        e.target.value
-      )
-    }
-  />
+    <button
+      className="gold-button"
+      onClick={handleAddProduct}
+    >
+      เพิ่มสินค้า
+    </button>
+    <button
+      className="delete-button"
+      onClick={onClose}
+    >
+      ยกเลิก
+    </button>
 
-  <button
-    className="gold-button"
-    onClick={handleAddProduct}
-  >
-    เพิ่มสินค้า
-  </button>
-
-</div>
+    </div>
+  </div>
+  
 
 
 );

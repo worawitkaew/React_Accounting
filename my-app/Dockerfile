@@ -2,14 +2,15 @@ FROM node
 
 WORKDIR /usr/src/app/my-app
 
+# 1. Copy แค่ package.json เข้ามาก่อนเพื่อติดตั้ง library
 COPY package*.json ./
-# COPY . /usr/src/app/my-app
-# COPY . ./
 
-# RUN npm install -g npm@9.1.3
 RUN npm install
-
 RUN npm install react-router-dom
-#RUN chmod a+rwx /usr/src/app/my-app/node_modules/
+RUN npm install recharts
+
+# 2. เปิดบรรทัดนี้ เพื่อ Copy โค้ดทั้งหมด (รวมถึงโฟลเดอร์ src, public) เข้ามาใน Docker
+# (เอาเครื่องหมาย # ออก และแนะนำให้ใช้บรรทัดนี้ครับ)
+COPY . ./
 
 CMD ["npm", "start"]

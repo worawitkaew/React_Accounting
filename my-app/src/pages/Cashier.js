@@ -5,6 +5,15 @@ function Cashier() {
 
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const [searchText,
+  setSearchText] =
+  useState("");
+  const [paymentMethod,
+  setPaymentMethod] =
+  useState("cash");
+  const [slipImage,
+  setSlipImage] =
+  useState(null);
 
   const loadProducts = () => {
 
@@ -58,7 +67,104 @@ function Cashier() {
     }
 
   };
+  const increaseQuantity =
+    (productId) => {
 
+    const updatedCart =
+
+
+    cart.map((item) => {
+
+      if (
+        item.id === productId
+      ) {
+
+        if (
+          item.quantity >=
+          item.stock
+        ) {
+
+          alert(
+            "สินค้าในสต๊อกไม่พอ"
+          );
+
+          return item;
+
+        }
+
+        return {
+
+          ...item,
+
+          quantity:
+            item.quantity + 1
+
+        };
+
+      }
+
+      return item;
+
+    });
+
+
+  setCart(updatedCart);
+
+  };
+  const decreaseQuantity =
+    (productId) => {
+
+    const updatedCart =
+
+    
+    cart
+      .map((item) => {
+
+        if (
+          item.id === productId
+        ) {
+
+          return {
+
+            ...item,
+
+            quantity:
+              item.quantity - 1
+
+          };
+
+        }
+
+        return item;
+
+      })
+
+      .filter(
+        (item) =>
+          item.quantity > 0
+      );
+    
+
+    setCart(updatedCart);
+
+    };
+
+const removeFromCart =
+(productId) => {
+
+const updatedCart =
+
+  cart.filter(
+
+    (item) =>
+
+      item.id !== productId
+
+  );
+
+  setCart(updatedCart);
+
+  };
   const totalAmount = cart.reduce(
 
     (total, item) =>
@@ -69,27 +175,88 @@ function Cashier() {
 
   );
 
-  const handleCheckout = () => {
+  const handleCheckout =
+    async () => {
 
-    if (cart.length === 0) {
+    if (
+    cart.length === 0
+    ) {
 
-      alert("ยังไม่มีสินค้าในตะกร้า");
+    alert(
+      "ยังไม่มีสินค้าในตะกร้า"
+    );
 
-      return;
+    return;
+
     }
 
-    const items = cart.map((item) => ({
-      product_id: item.id,
-      quantity: item.quantity
-    }));
+    if (
+    paymentMethod ===
+    "transfer"
+    &&
+    !slipImage
+    ) {
 
+    alert(
+      "กรุณาแนบสลิปการโอนเงิน"
+    );
+
+    return;
+
+    }
+
+    let slipFilename = "";
+
+    const items =
+    cart.map(
+    (item) => ({
+    product_id:
+    item.id,
+
+        quantity:
+          item.quantity
+      })
+    );
+
+    if (
+    paymentMethod ===
+    "transfer"
+    ) {
+
+    const formData =
+      new FormData();
+
+    formData.append(
+      "file",
+      slipImage
+    );
+
+    const uploadResponse =
+      await fetch(
+        `${API_URL}/upload-slip`,
+        {
+          method: "POST",
+          body: formData
+        }
+      );
+
+    const uploadData =
+      await uploadResponse.json();
+
+    slipFilename =
+      uploadData.filename;
+
+    }
     fetch(`${API_URL}/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        items: items
+        items: items,
+        payment_method:paymentMethod,
+        slip_image: slipFilename
+
       })
     })
       .then((response) => response.json())
@@ -134,8 +301,38 @@ function Cashier() {
       <div className="product-section">
 
         <h2>สินค้า</h2>
+        <input
+        type="text"
+        placeholder="ค้นหาสินค้า..."
+        value={searchText}
+        onChange={(e) =>
+        setSearchText(
+        e.target.value
+        )
+        }
+        />
+        {products
 
-        {products.map((item) => (
+        .filter(
+        (item) =>
+
+        item.stock > 0
+
+        )
+
+        .filter(
+        (item) =>
+
+        item.name
+          .toLowerCase()
+          .includes(
+            searchText
+              .toLowerCase()
+          )
+
+        )
+
+        .map((item) => (
 
           <div
             key={item.id}
@@ -186,17 +383,56 @@ function Cashier() {
             className="cart-card"
           >
 
-            <h3>
-              {item.name}
-            </h3>
+          <h3>
+            {item.name}
+          </h3>
 
-            <p>
-              จำนวน {item.quantity}
-            </p>
+          <div
+            className="quantity-box"
+          >
 
-            <p>
-              รวม {item.quantity * item.sell_price} บาท
-            </p>
+            <button
+              className="qty-button"
+              onClick={() =>
+                decreaseQuantity(
+                  item.id
+                )
+              }
+            >
+              -
+            </button>
+
+            <span>
+              {item.quantity}
+            </span>
+
+            <button
+              className="qty-button"
+              onClick={() =>
+                increaseQuantity(
+                  item.id
+                )
+              }
+            >
+              +
+            </button>
+
+          </div>
+
+          <p>
+            รวม {item.quantity * item.sell_price} บาท
+          </p>
+
+          <button
+            className="remove-button"
+            onClick={() =>
+              removeFromCart(
+                item.id
+              )
+            }
+          >
+            ลบออก
+          </button>
 
           </div>
 
@@ -213,6 +449,49 @@ function Cashier() {
           </h1>
 
         </div>
+
+        <div className="payment-box">
+
+        <h3>
+          วิธีชำระเงิน
+        </h3>
+
+        <select
+          value={paymentMethod}
+          onChange={(e) =>
+            setPaymentMethod(
+              e.target.value
+            )
+          }
+        >
+
+          <option value="cash">
+            เงินสด
+          </option>
+
+          <option value="transfer">
+            โอนเงิน
+          </option>
+
+        </select>
+
+        </div>
+
+        {
+          paymentMethod ===
+          "transfer" && (
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setSlipImage(
+                e.target.files[0]
+              )
+            }
+          />
+          )
+        } 
 
         <button
           className="checkout-button"

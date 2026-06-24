@@ -130,3 +130,49 @@
   color: gold;
 
 }
+.remove-button {
+
+background: #dc2626;
+
+color: white;
+
+border: none;
+
+padding: 8px 12px;
+
+border-radius: 8px;
+
+cursor: pointer;
+
+}
+.quantity-box {
+
+display: flex;
+
+align-items: center;
+
+gap: 10px;
+
+margin: 10px 0;
+
+}
+
+.qty-button {
+
+width: 35px;
+
+height: 35px;
+
+border: none;
+
+border-radius: 8px;
+
+background: gold;
+
+color: black;
+
+font-weight: bold;
+
+cursor: pointer;
+
+}

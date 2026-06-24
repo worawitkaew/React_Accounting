@@ -1,22 +1,64 @@
 import { useEffect, useState } from "react";
+import {Link}from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import "./Admin.css";
 import API_URL from "../api";
 
 import ProductForm from "../components/ProductForm";
+import ProductCard from "../components/ProductCard";
+import ProductEditModal from "../components/ProductEditModal";
+import CategoryManager from "../components/CategoryManager";
+import OwnerManager from "../components/OwnerManager";
+import AdminDashboard
+from "../components/AdminDashboard";
+import BusinessSummary
+from "../components/BusinessSummary";
+import LowStockAlert
+from "../components/LowStockAlert";
+import OwnerSummary
+from "../components/OwnerSummary";
+
+import DashboardSummary
+from "../components/DashboardSummary";
+import SalesChart
+from "../components/SalesChart";
 
 function Admin() {
 
-  const navigate = useNavigate();
+  const [showForm,
+  setShowForm] =
+  useState(false);
 
+  const [showFormowners,
+  setShowFormowners] =
+  useState(false);
+  const [showFormcategories,
+  setShowFormcategories] =
+  useState(false);
+  
+  const navigate = useNavigate();
+  
   const role = localStorage.getItem("role");
 
   const [products, setProducts] = useState([]);
-
+  const [owners, setOwners] =
+  useState([]);
+ 
   const [editingProduct,
   setEditingProduct] =
-  useState(null);
+  useState(false);
+
+  const [searchText,
+  setSearchText] =
+  useState("");
+
+  const [selectedCategory,
+  setSelectedCategory] =
+  useState("ทั้งหมด");
+  const [categories,
+  setCategories] =
+  useState([]);
 
   const loadProducts = () => {
 
@@ -30,12 +72,43 @@ function Admin() {
 
   };
 
+  const loadOwners = () => {
+
+    fetch(
+      `${API_URL}/owners`
+    )
+      .then((res) =>
+        res.json()
+      )
+      .then((data) =>
+        setOwners(data)
+      );
+
+  };
+
+  const loadCategories =
+  () => {
+
+    fetch(
+      `${API_URL}/categories`
+    )
+      .then((res) =>
+        res.json()
+      )
+      .then((data) =>
+        setCategories(data)
+      );
+
+  };
   useEffect(() => {
 
     loadProducts();
 
-  }, []);
+    loadOwners();
 
+    loadCategories();
+
+  }, []);
   const handleDeleteProduct = async (id) => {
 
     const confirmDelete =
@@ -69,10 +142,10 @@ function Admin() {
     productId
   ) => {
 
-    const input =
-      document.createElement(
-        "input"
-      );
+  const input =
+    document.createElement(
+      "input"
+  );
 
     input.type = "file";
 
@@ -147,60 +220,8 @@ function Admin() {
     navigate("/");
 
   };
-  const handleSaveEdit =
-  async () => {
-
-    try {
-
-      const response =
-        await fetch(
-          `${API_URL}/products/${editingProduct.id}`,
-          {
-            method: "PUT",
-
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-
-            body: JSON.stringify(
-              editingProduct
-            )
-          }
-        );
-
-      if (!response.ok) {
-
-        const errorData =
-          await response.json();
-
-        alert(
-          "บันทึกไม่สำเร็จ\n\n" +
-          errorData.detail
-        );
-
-        return;
-
-      }
-
-      alert("บันทึกสำเร็จ");
-
-      setEditingProduct(null);
-
-      loadProducts();
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        "เชื่อมต่อ Server ไม่สำเร็จ"
-      );
-
-    }
-
-  };
-
+  
+  
   if (role !== "admin") {
 
     return (
@@ -224,163 +245,259 @@ function Admin() {
       <h1 className="admin-title">
         ⭐ ระบบจัดการร้านดาวตก
       </h1>
-
-      <ProductForm
-        onSuccess={loadProducts}
+      <DashboardSummary />
+      <SalesChart />
+      <AdminDashboard
+        products={products}
+        owners={owners}
+        categories={categories}
       />
+      <BusinessSummary
+        products={products}
+      />
+      <LowStockAlert
+        products={products}
+      />
+      <OwnerSummary
+        products={products}
+      />
+      <button
+        className="gold-button"
+        onClick={() =>
+          setShowForm(!showForm)
+        }
+      >
+        ➕ เพิ่มสินค้า
+      </button>
+      <button
+        className="gold-button"
+        onClick={() =>
+          setShowFormowners(!showFormowners)
+        }
+      >
+        ➕ เพิ่มตำแหน่งผู้ใช้งาน
+      </button>
+      <button
+        className="gold-button"
+        onClick={() =>
+          setShowFormcategories(!showFormcategories)
+        }
+      >
+        ➕ เพิ่ม Category
+      </button>
+      {
+        showForm && (
 
+        <ProductForm
+          onClose={() =>
+            setShowForm(false)
+          }
+          onSuccess={() => {
+            
+            loadProducts();
+
+            setShowForm(false);
+
+          }}
+        />
+        
+        )
+      }
+      {
+        showFormowners && (
+
+        <OwnerManager
+          onClose={() =>
+            setShowFormowners(false)
+          }
+          owners={owners}
+          reloadOwners={loadOwners}
+          onSuccess={() => {
+
+            loadOwners();
+
+            setShowFormowners(false);
+
+          }}
+        />
+        
+        )
+      }
+      {
+        showFormcategories && (
+
+        <CategoryManager
+          onClose={() =>
+            setShowFormcategories(false)
+          }
+          categories={categories}
+          reloadCategories={loadCategories}
+          onSuccess={() => {
+
+            loadCategories();
+
+            setShowFormcategories(false);
+
+          }}
+        />
+        
+        )
+      }
+     
       <h2 className="section-title">
         รายการสินค้า
       </h2>
+      <p className="product-count">
 
-      <h2>
-        📦 สินค้าทั้งหมด
-        {products.length}
+        พบสินค้า
+
+        {" "}
+
+        {
+
+          products.filter(
+            (item) =>
+
+              item.name
+                .toLowerCase()
+                .includes(
+                  searchText
+                    .toLowerCase()
+                )
+
+          ).length
+
+        }
+
+        {" "}
+
         รายการ
-      </h2>
-      {editingProduct && (
 
-        <div
-          className="admin-card"
-        >
+      </p>
+      
+      
+      <input
+        type="text"
+        placeholder="ค้นหาสินค้า..."
+        className="search-input"
+        value={searchText}
+        onChange={(e) =>
+          setSearchText(
+            e.target.value
+          )
+        }
+      />
+      <select
+        className="filter-select"
+        value={selectedCategory}
+        onChange={(e) =>
+          setSelectedCategory(
+            e.target.value
+          )
+        }
+      >
 
-          <input
-            value={editingProduct.name}
-            onChange={(e) =>
-              setEditingProduct({
-                ...editingProduct,
-                name: e.target.value
-              })
-            }
-          />
+        <option value="ทั้งหมด">
+          ทั้งหมด
+        </option>
 
-          <input
-            value={editingProduct.sell_price}
-            onChange={(e) =>
-              setEditingProduct({
-                ...editingProduct,
-                sell_price:
-                  e.target.value
-              })
-            }
-          />
-        <button
-          className="gold-button"
-          onClick={handleSaveEdit}
-        >
-          บันทึก
-        </button>
-        <button
-          onClick={() =>
-            setEditingProduct(null)
-          }
-        >
-          ยกเลิก
-        </button>
-        </div>
-        
-      )}
+        {categories.map((item) => (
+
+          <option
+            key={item.id}
+            value={item.name}
+          >
+            {item.name}
+          </option>
+
+        ))}
+
+      </select>
       <div className="admin-product-grid">
 
-        {products.map((item) => (
+        {products
 
-          <div
+        .filter((item) => {
+
+          const matchSearch =
+
+            item.name
+              .toLowerCase()
+              .includes(
+                searchText
+                  .toLowerCase()
+              );
+
+          const matchCategory =
+
+            selectedCategory ===
+            "ทั้งหมด"
+
+            ||
+
+            item.category ===
+            selectedCategory;
+
+          return (
+            matchSearch &&
+            matchCategory
+          );
+
+        })
+
+        .map((item) => (
+
+          <ProductCard
             key={item.id}
-            className="product-card"
-          >
-
-            {item.image && (
-
-              <img
-                src={
-                  `${API_URL}/uploads/` +
-                  item.image
-                }
-                alt={item.name}
-                className="admin-product-image"
-              />
-
-            )}
-            
-            <h3>
-              {item.name}
-            </h3>
-
-            <p>
-              เจ้าของ :
-              {" "}
-              {item.owner}
-            </p>
-
-            <p>
-              หมวดหมู่ :
-              {" "}
-              {item.category}
-            </p>
-
-            <p>
-              ต้นทุน :
-              {" "}
-              {item.cost_price}
-              {" "}
-              บาท
-            </p>
-
-            <p>
-              ราคาขาย :
-              {" "}
-              {item.sell_price}
-              {" "}
-              บาท
-            </p>
-
-            <p>
-              คงเหลือ :
-              {" "}
-              {item.stock}
-            </p>
-
-            <button
-              className="edit-button"
-              onClick={() =>
-                setEditingProduct(item)
-              }
-            >
-              แก้ไขสินค้า
-            </button>
-            <button
-              className="image-button"
-              onClick={() =>
-                handleChangeImage(
-                  item.id
-                )
-              }
-            >
-              เปลี่ยนรูป
-            </button>
-            <button
-              className="delete-button"
-              onClick={() =>
-                handleDeleteProduct(
-                  item.id
-                )
-              }
-            >
-              ลบสินค้า
-            </button>
-
-          </div>
+            item={item}
+            onEdit={
+              setEditingProduct
+            }
+            onDelete={
+              handleDeleteProduct
+            }
+            handleChangeImage={
+              handleChangeImage
+            }
+          />
 
         ))}
 
       </div>
+      <ProductEditModal
 
+        product={editingProduct}
+
+        owners={owners}
+
+        categories={categories}
+
+        onClose={() =>
+          setEditingProduct(false)
+        }
+
+        onSuccess={loadProducts}
+
+      />
       <button
         className="logout-button"
         onClick={handleLogout}
       >
         Logout
       </button>
+      <Link
+      to="/cash-deposit"
+      >
+
+      <button
+      className="gold-button"
+      >
+
+      🏦 ฝากเงินเข้าธนาคาร
+
+      </button>
+
+      </Link>
 
     </div>
 
